@@ -20,14 +20,7 @@ class Background extends StatelessWidget {
             left: 0,
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const WelcomeScreen();
-                    },
-                  ),
-                );
+               Navigator.pop(context);
               },
               child: const Icon(
                 Icons.arrow_back,

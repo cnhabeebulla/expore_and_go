@@ -22,14 +22,15 @@ class RoundButton extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              primaryColor2,
-              primaryColor,
-            ],
-          ),
+        color: primaryColor,
+          // gradient: const LinearGradient(
+          //   begin: Alignment.topLeft,
+          //   end: Alignment.bottomRight,
+          //   colors: [
+          //     primaryColor2,
+          //     primaryColor,
+          //   ],
+          // ),
           borderRadius: BorderRadius.circular(15)),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       width: size.width * width,

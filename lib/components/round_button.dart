@@ -22,7 +22,7 @@ class RoundButton extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
-        color: primaryColor,
+        
           // gradient: const LinearGradient(
           //   begin: Alignment.topLeft,
           //   end: Alignment.bottomRight,
@@ -37,7 +37,7 @@ class RoundButton extends StatelessWidget {
       height: size.height * 0.070,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          primary: primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),

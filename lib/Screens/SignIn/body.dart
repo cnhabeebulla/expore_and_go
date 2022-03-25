@@ -1,5 +1,6 @@
 import 'package:explore_and_go_application/Screens/SignUp/components/background.dart';
 import 'package:explore_and_go_application/Screens/SignUp/signup_screen.dart';
+import 'package:explore_and_go_application/Screens/forgot_password/forgotPasssowrd.dart';
 import 'package:explore_and_go_application/components/SignWithButton.dart';
 import 'package:explore_and_go_application/components/or_divider.dart';
 import 'package:explore_and_go_application/components/password_inputField.dart';
@@ -48,12 +49,24 @@ class Body extends StatelessWidget {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Forgt password ?",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.blue,
+                children:  [
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const ForgotPassword();
+                        },
+                      ),
+                    );
+                    },
+                    child: Text(
+                      "Forgot password ?",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      ),
                     ),
                   )
                 ],

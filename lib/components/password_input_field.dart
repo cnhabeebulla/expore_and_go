@@ -3,7 +3,14 @@ import 'package:explore_and_go_application/constants.dart';
 
 class PassowrdTextField extends StatefulWidget {
   final String text;
-  const PassowrdTextField({Key? key, required this.text}) : super(key: key);
+  final  Function valFunc;
+  final TextEditingController controllerName;
+  const PassowrdTextField({
+    Key? key,
+    required this.text,
+    required this.valFunc,
+    required this.controllerName,
+  }) : super(key: key);
   @override
   State<PassowrdTextField> createState() => _PassowrdTextFieldState();
 }
@@ -18,7 +25,11 @@ class _PassowrdTextFieldState extends State<PassowrdTextField> {
     Size size = MediaQuery.of(context).size;
     return SizedBox(
       height: size.height * 0.09,
-      child: TextField(
+      child: TextFormField(
+        controller: widget.controllerName,
+        validator: (value) {
+          return widget.valFunc(value!);
+        },
         style: const TextStyle(
           height: 1.6,
         ),

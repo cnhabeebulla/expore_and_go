@@ -1,3 +1,4 @@
+import 'package:explore_and_go_application/Screens/create_password/create_password_screen.dart';
 import 'package:explore_and_go_application/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,25 @@ class Background extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          const Positioned(
+          Positioned(
             top: 0,
             right: 0,
-            child: Icon(
-              Icons.close,
-              color: primaryColor,
-              size: 35,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const ChangePassword();
+                    },
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.close,
+                color: primaryColor,
+                size: size.width * 0.0778,
+              ),
             ),
           ),
           child

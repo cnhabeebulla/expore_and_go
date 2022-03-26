@@ -1,4 +1,3 @@
-import 'package:explore_and_go_application/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:explore_and_go_application/constants.dart';
 
@@ -20,10 +19,11 @@ class Background extends StatelessWidget {
             left: 0,
             child: GestureDetector(
               onTap: () {
-               Navigator.pop(context);
+                Navigator.pop(context);
               },
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back,
+                size: size.width * 0.0778,
                 color: primaryColor,
               ),
             ),

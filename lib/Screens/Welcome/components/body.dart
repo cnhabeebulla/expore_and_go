@@ -1,5 +1,5 @@
 import 'package:explore_and_go_application/Screens/SignUp/signup_screen.dart';
-import 'package:explore_and_go_application/Screens/SignIn/Signin_scree.dart';
+import 'package:explore_and_go_application/Screens/SignIn/signin_screen.dart';
 import 'package:explore_and_go_application/components/round_button.dart';
 import 'package:explore_and_go_application/constants.dart';
 import 'package:flutter/material.dart';

@@ -1,21 +1,24 @@
 import 'package:explore_and_go_application/Screens/SignUp/components/background.dart';
 import 'package:explore_and_go_application/Screens/SignUp/signup_screen.dart';
-import 'package:explore_and_go_application/Screens/forgot_password/forgotPasssowrd.dart';
-import 'package:explore_and_go_application/components/SignWithButton.dart';
+import 'package:explore_and_go_application/Screens/forgot_password/forgot_passsowrd.dart';
+import 'package:explore_and_go_application/components/custom_button.dart';
 import 'package:explore_and_go_application/components/or_divider.dart';
-import 'package:explore_and_go_application/components/password_inputField.dart';
+import 'package:explore_and_go_application/components/password_input_field.dart';
 import 'package:explore_and_go_application/components/round_button.dart';
-import 'package:explore_and_go_application/components/round_text_inputField.dart';
+import 'package:explore_and_go_application/components/round_text_input_field.dart';
+import 'package:explore_and_go_application/functions/validation.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController _pass = TextEditingController();
+
+  Body({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     //to provide the height and width of screen based on the Screen ratio
     Size size = MediaQuery.of(context).size;
-
     return Background(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -35,33 +38,48 @@ class Body extends StatelessWidget {
               SizedBox(
                 height: size.height * 0.03,
               ),
-              const TextFieldConatiner(icon: Icons.email, text: "Enter email"),
-              const PassowrdTextField(
-                text: "Your password",
-              ),
-              RoundButton(
-                text: "Sign In",
-                press: () {},
-                width: 0.6,
+              Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    const TextFieldConatiner(
+                      icon: Icons.email,
+                      text: "Enter email",
+                      valFunc: emailValidator,
+                    ),
+                     PassowrdTextField(
+                      text: "Your password",
+                      valFunc: passwordValidator,
+                     controllerName: _pass,
+                    ),
+                    RoundButton(
+                      text: "Sign In",
+                      press: () {
+                        formKey.currentState!.validate();
+                      },
+                      width: 0.6,
+                    ),
+                  ]),
+                ),
               ),
               SizedBox(
                 height: size.height * 0.02,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children:  [
+                children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const ForgotPassword();
-                        },
-                      ),
-                    );
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const ForgotPassword();
+                          },
+                        ),
+                      );
                     },
-                    child: Text(
+                    child: const Text(
                       "Forgot password ?",
                       style: TextStyle(
                         fontSize: 12,

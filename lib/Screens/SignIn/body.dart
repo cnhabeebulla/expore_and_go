@@ -8,10 +8,35 @@ import 'package:explore_and_go_application/components/round_button.dart';
 import 'package:explore_and_go_application/components/round_text_input_field.dart';
 import 'package:explore_and_go_application/functions/validation.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Body extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _pass = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+
+  Future SignInMe() async {
+    if (formKey.currentState!.validate()) {
+      print("loading auth");
+    }
+
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: _email.text.trim(), password: _pass.text)
+          .then((value) => print(value.user));
+      print('login sucess');
+      print(FirebaseAuth.instance.currentUser);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      } else {
+        print("errorrrrr");
+      }
+    }
+  }
 
   Body({Key? key}) : super(key: key);
 
@@ -47,15 +72,15 @@ class Body extends StatelessWidget {
                       text: "Enter email",
                       valFunc: emailValidator,
                     ),
-                     PassowrdTextField(
+                    PassowrdTextField(
                       text: "Your password",
                       valFunc: passwordValidator,
-                     controllerName: _pass,
+                      controllerName: _pass,
                     ),
                     RoundButton(
                       text: "Sign In",
                       press: () {
-                        formKey.currentState!.validate();
+                        SignInMe();
                       },
                       width: 0.6,
                     ),

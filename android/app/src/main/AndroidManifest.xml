@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.explore_and_go_application">
+    package="com.app.explore_and_go">
    <application
         android:label="explore_and_go_application"
         android:name="${applicationName}"

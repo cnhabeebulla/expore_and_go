@@ -1,4 +1,4 @@
-package com.example.explore_and_go_application
+package com.app.explore_and_go
 
 import io.flutter.embedding.android.FlutterActivity
 

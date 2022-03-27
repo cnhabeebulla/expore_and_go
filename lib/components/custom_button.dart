@@ -5,7 +5,7 @@ class CustomRaisedButton extends StatelessWidget {
   final Color color;
   final double borderRadius;
   final VoidCallback onPressed;
-  CustomRaisedButton({
+  const CustomRaisedButton({
     required this.child,
     this.color = Colors.white,
     this.borderRadius = 6,

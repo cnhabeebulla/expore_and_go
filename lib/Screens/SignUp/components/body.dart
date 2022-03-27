@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:explore_and_go_application/Screens/SignIn/signin_screen.dart';
 import 'package:explore_and_go_application/components/custom_button.dart';
 import 'package:explore_and_go_application/components/or_divider.dart';

@@ -5,11 +5,15 @@ class TextFieldConatiner extends StatelessWidget {
   final IconData icon;
   final String text;
   final Function valFunc;
+  final TextEditingController controller;
+  final TextInputType fieldType; 
   const TextFieldConatiner({
     Key? key,
     required this.icon,
     required this.text,
     required this.valFunc,
+    required this.controller,
+    this.fieldType = TextInputType.text,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -17,6 +21,8 @@ class TextFieldConatiner extends StatelessWidget {
     return SizedBox(
       height: size.height * 0.1,
       child: TextFormField(
+        keyboardType: fieldType ,
+        controller: controller,
         validator: (value) {
           return valFunc(value!);
         },

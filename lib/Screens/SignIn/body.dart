@@ -7,6 +7,7 @@ import 'package:explore_and_go_application/components/password_input_field.dart'
 import 'package:explore_and_go_application/components/round_button.dart';
 import 'package:explore_and_go_application/components/round_text_input_field.dart';
 import 'package:explore_and_go_application/functions/validation.dart';
+import 'package:explore_and_go_application/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -14,28 +15,72 @@ class Body extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _email = TextEditingController();
+  final navigatorKey = GlobalKey<NavigatorState>();
 
-  Future SignInMe() async {
+  Future signInMe(BuildContext context) async {
     if (formKey.currentState!.validate()) {
-      print("loading auth");
-    }
-
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: _email.text.trim(), password: _pass.text)
-          .then((value) => print(value.user));
-      print('login sucess');
-      print(FirebaseAuth.instance.currentUser);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      } else {
-        print("errorrrrr");
+      showDialog(
+          context: context,
+          builder: (context) => const Center(
+                child: CircularProgressIndicator(),
+              ));
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _email.text.trim(), password: _pass.text);
+        //.then((value) =>
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          print('No user found for that email.');
+          Navigator.of(context).pop();
+          _showMyDialog("Invalid email", context);
+          return null;
+        } else if (e.code == 'wrong-password') {
+          print('Wrong password provided for that user.');
+          Navigator.pop(context);
+          _showMyDialog("Wrong Password", context);
+          return null;
+        } else if (e.code == 'too-many-requests') {
+          print("Too many attempt");
+        } else {
+          Navigator.pop(context);
+          _showMyDialog("Something went wrong ${e.code}", context);
+          print(e.toString());
+          return null;
+        }
       }
+      //navigatorKey.currentState!.popUntil((route) => route.)
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (route) => false);
+      // Navigator.of(context).push(
+      //   MaterialPageRoute(
+      //     builder: (context) => const HomeScreen(),
+      //   ),
+      // );
     }
+  }
+
+  Future<void> _showMyDialog(String message, BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // title:const Text("Login failed"),
+          content: SingleChildScrollView(
+            child: Text(message),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Body({Key? key}) : super(key: key);
@@ -67,20 +112,22 @@ class Body extends StatelessWidget {
                 key: formKey,
                 child: SingleChildScrollView(
                   child: Column(children: [
-                    const TextFieldConatiner(
+                    TextFieldConatiner(
                       icon: Icons.email,
                       text: "Enter email",
                       valFunc: emailValidator,
+                      controller: _email,
+                      fieldType: TextInputType.emailAddress,
                     ),
                     PassowrdTextField(
                       text: "Your password",
-                      valFunc: passwordValidator,
+                      valFunc: isNull,
                       controllerName: _pass,
                     ),
                     RoundButton(
                       text: "Sign In",
                       press: () {
-                        SignInMe();
+                        signInMe(context);
                       },
                       width: 0.6,
                     ),
@@ -95,7 +142,7 @@ class Body extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pop(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
@@ -149,7 +196,7 @@ class Body extends StatelessWidget {
                   const Text("Create an account - "),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pop(
                         context,
                         MaterialPageRoute(
                           builder: (context) {

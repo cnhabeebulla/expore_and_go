@@ -5,6 +5,7 @@ import 'package:explore_and_go_application/components/password_input_field.dart'
 import 'package:explore_and_go_application/components/round_button.dart';
 import 'package:explore_and_go_application/components/round_text_input_field.dart';
 import 'package:explore_and_go_application/functions/validation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'background.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,8 @@ class Body extends StatelessWidget {
   Body({Key? key}) : super(key: key);
   final formKey = GlobalKey<FormState>();
   final TextEditingController _pass = TextEditingController();
-
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _email = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,27 +41,38 @@ class Body extends StatelessWidget {
                 SizedBox(
                   height: size.height * 0.03,
                 ),
-                const TextFieldConatiner(
+                TextFieldConatiner(
                   icon: Icons.person,
                   text: "Enter Full name",
                   valFunc: usernameValidator,
+                  controller: _username,
+                  fieldType: TextInputType.name,
                 ),
-                const TextFieldConatiner(
+                TextFieldConatiner(
                   icon: Icons.email,
                   text: "Enter email",
                   valFunc: emailValidator,
+                  controller: _email,
+                  fieldType: TextInputType.emailAddress,
                 ),
-                 PassowrdTextField(
+                PassowrdTextField(
                   text: "Your password",
-                valFunc: passwordValidator,
-                controllerName: _pass,
-
+                  valFunc: passwordValidator,
+                  controllerName: _pass,
                 ),
                 RoundButton(
                   text: "Sign Up",
                   press: () {
                     if (formKey.currentState!.validate()) {
                       print('validating forms');
+
+                      try {
+                        FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: _email.text.trim(),
+                            password: _pass.text.trim());
+                      } catch (e) {
+                        print(e);
+                      }
                     }
                   },
                   width: 0.6,

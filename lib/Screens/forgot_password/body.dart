@@ -12,6 +12,9 @@ class Body extends StatelessWidget {
     //to provide the height and width of screen based on the Screen ratio
     Size size = MediaQuery.of(context).size;
     final formKey = GlobalKey<FormState>();
+    final TextEditingController _email = TextEditingController();
+    final TextEditingController _pass = TextEditingController();
+
 
     return Background(
       child: Container(
@@ -34,8 +37,9 @@ class Body extends StatelessWidget {
                 SizedBox(
                   height: size.height * 0.03,
                 ),
-                const TextFieldConatiner(icon: Icons.email, text: "Enter email",
-                valFunc: emailValidator,),
+                 TextFieldConatiner(icon: Icons.email, text: "Enter email",
+                valFunc: emailValidator,
+                controller: _email,),
                 
                 RoundButton(
                   text: "Sign In",

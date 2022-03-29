@@ -9,6 +9,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    // String? email = FirebaseAuth.instance.currentUser!.email;
     return Scaffold(
       body: Container(
         alignment: Alignment.center,

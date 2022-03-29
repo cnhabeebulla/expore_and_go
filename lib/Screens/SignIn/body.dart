@@ -10,6 +10,7 @@ import 'package:explore_and_go_application/functions/validation.dart';
 import 'package:explore_and_go_application/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:explore_and_go_application/functions/helper_function.dart';
 
 class Body extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
@@ -19,32 +20,28 @@ class Body extends StatelessWidget {
 
   Future signInMe(BuildContext context) async {
     if (formKey.currentState!.validate()) {
-      showDialog(
-          context: context,
-          builder: (context) => const Center(
-                child: CircularProgressIndicator(),
-              ));
+      showLoading(context);
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _email.text.trim(), password: _pass.text);
         //.then((value) =>
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          print('No user found for that email.');
+          //print('No user found for that email.');
           Navigator.of(context).pop();
-          _showMyDialog("Invalid email", context);
+          showMyDialog("Invalid email", context);
           return null;
         } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
+          //print('Wrong password provided for that user.');
           Navigator.pop(context);
-          _showMyDialog("Wrong Password", context);
+          showMyDialog("Wrong Password", context);
           return null;
         } else if (e.code == 'too-many-requests') {
-          print("Too many attempt");
+          //print("Too many attempt");
         } else {
           Navigator.pop(context);
-          _showMyDialog("Something went wrong ${e.code}", context);
-          print(e.toString());
+          showMyDialog("Something went wrong ${e.code}", context);
+          //print(e.toString());
           return null;
         }
       }
@@ -58,29 +55,6 @@ class Body extends StatelessWidget {
       //   ),
       // );
     }
-  }
-
-  Future<void> _showMyDialog(String message, BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          // title:const Text("Login failed"),
-          content: SingleChildScrollView(
-            child: Text(message),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   Body({Key? key}) : super(key: key);
@@ -142,7 +116,7 @@ class Body extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
@@ -196,7 +170,7 @@ class Body extends StatelessWidget {
                   const Text("Create an account - "),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) {

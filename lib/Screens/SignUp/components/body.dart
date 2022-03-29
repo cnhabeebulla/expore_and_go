@@ -4,7 +4,9 @@ import 'package:explore_and_go_application/components/or_divider.dart';
 import 'package:explore_and_go_application/components/password_input_field.dart';
 import 'package:explore_and_go_application/components/round_button.dart';
 import 'package:explore_and_go_application/components/round_text_input_field.dart';
+import 'package:explore_and_go_application/functions/helper_function.dart';
 import 'package:explore_and_go_application/functions/validation.dart';
+import 'package:explore_and_go_application/home_screen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'background.dart';
 import 'package:flutter/material.dart';
@@ -64,15 +66,8 @@ class Body extends StatelessWidget {
                   text: "Sign Up",
                   press: () {
                     if (formKey.currentState!.validate()) {
-                      print('validating forms');
-
-                      try {
-                        FirebaseAuth.instance.createUserWithEmailAndPassword(
-                            email: _email.text.trim(),
-                            password: _pass.text.trim());
-                      } catch (e) {
-                        print(e);
-                      }
+                      showLoading(context);
+                      _createUserEmail(context);
                     }
                   },
                   width: 0.6,
@@ -112,7 +107,7 @@ class Body extends StatelessWidget {
                     const Text("Already have an account ? "),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
@@ -140,5 +135,26 @@ class Body extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future _createUserEmail(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _email.text.trim(), password: _pass.text.trim());
+      await FirebaseAuth.instance.currentUser!.reload();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "email-already-in-use") {
+        Navigator.pop(context);
+        showMyDialog("Email id already in use", context);
+        return;
+      } else {
+        Navigator.pop(context);
+        showMyDialog("Something went wrong", context);
+        return;
+      }
+    }
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        (route) => false);
   }
 }

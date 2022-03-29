@@ -6,14 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-        apiKey: "AIzaSyATWJgBjfb7tsK6PG9Am2LqSlbzmI-NNfk",
-        appId: "1:1063181653345:android:d27e4274f3ccefbcb16120",
-        messagingSenderId:
-            "1063181653345-nq11bh75hjq2s4nifu4kekngjor4huqq.apps.googleusercontent.com",
-        projectId: "explore-and-go-project"),
-  );
+  
   runApp(const MyApp());
 }
 

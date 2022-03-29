@@ -2,6 +2,7 @@ import 'package:explore_and_go_application/Screens/SignUp/components/background.
 import 'package:explore_and_go_application/components/round_button.dart';
 import 'package:explore_and_go_application/components/round_text_input_field.dart';
 import 'package:explore_and_go_application/functions/validation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
@@ -13,8 +14,6 @@ class Body extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final formKey = GlobalKey<FormState>();
     final TextEditingController _email = TextEditingController();
-    final TextEditingController _pass = TextEditingController();
-
 
     return Background(
       child: Container(
@@ -37,21 +36,22 @@ class Body extends StatelessWidget {
                 SizedBox(
                   height: size.height * 0.03,
                 ),
-                 TextFieldConatiner(icon: Icons.email, text: "Enter email",
-                valFunc: emailValidator,
-                controller: _email,),
-                
+                TextFieldConatiner(
+                  icon: Icons.email,
+                  text: "Enter email",
+                  valFunc: emailValidator,
+                  controller: _email,
+                ),
                 RoundButton(
-                  text: "Sign In",
+                  text: "Reset password",
                   press: () {
-                    formKey.currentState!.validate();
+                    sendForgotPassword(formKey, _email, context);
                   },
                   width: 0.6,
                 ),
                 SizedBox(
                   height: size.height * 0.02,
                 ),
-                
                 SizedBox(
                   height: size.height * 0.02,
                 ),
@@ -61,5 +61,41 @@ class Body extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void sendForgotPassword(GlobalKey<FormState> formKey,
+      TextEditingController _email, BuildContext context) async {
+    if (formKey.currentState!.validate()) {
+      try {
+        await FirebaseAuth.instance
+            .sendPasswordResetEmail(email: _email.text.trim());
+      } on FirebaseAuthException catch (e) {
+        if (e.code == "user-not-found") {
+          //showMyDialog("No user found", context);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            behavior: SnackBarBehavior.floating,
+            //backgroundColor: primaryColor,
+            content: Text("No user found", textAlign: TextAlign.center),
+            duration: Duration(seconds: 3),
+          ));
+          return;
+        } else {
+          print(e);
+          return;
+        }
+      }
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        //backgroundColor: primaryColor,
+        content: const Text("Reset link sended"),
+        duration: const Duration(seconds: 8),
+        action: SnackBarAction(
+          label: "Login",
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ));
+    }
   }
 }

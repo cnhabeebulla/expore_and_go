@@ -4,10 +4,12 @@ import 'package:explore_and_go_application/components/or_divider.dart';
 import 'package:explore_and_go_application/components/password_input_field.dart';
 import 'package:explore_and_go_application/components/round_button.dart';
 import 'package:explore_and_go_application/components/round_text_input_field.dart';
+import 'package:explore_and_go_application/functions/google_sign_in.dart';
 import 'package:explore_and_go_application/functions/helper_function.dart';
 import 'package:explore_and_go_application/functions/validation.dart';
 import 'package:explore_and_go_application/home_screen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'background.dart';
 import 'package:flutter/material.dart';
 
@@ -96,7 +98,17 @@ class Body extends StatelessWidget {
                           ),
                         ],
                       ),
-                      onPressed: () {}),
+                      onPressed: () {
+                        try {
+                          signUpWithGoogleAccount(context);
+                        } on Exception catch (e) {
+                          return;
+                        }
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()),
+                            (route) => false);
+                      }),
                 ),
                 SizedBox(
                   height: size.height * 0.02,
@@ -136,6 +148,8 @@ class Body extends StatelessWidget {
       ),
     );
   }
+
+  
 
   Future _createUserEmail(BuildContext context) async {
     try {

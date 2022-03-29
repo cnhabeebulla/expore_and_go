@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
 
+//Function to check wetaher user already linked with email
+// static Future<bool> isEmailLinked(String text) async {
+//   if (FirebaseAuth.instance.isSignInWithEmailLink(text)) {
+//     print("yes linked");
+//     return true;
+//   } else {
+//     print("not linked");
+//     return false;
+//   }
+// }
+
 //Function to create a spinning loading screen
 Future<void> showLoading(BuildContext context) async {
   showDialog(

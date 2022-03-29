@@ -11,7 +11,7 @@ class CustomRaisedButton extends StatelessWidget {
     this.borderRadius = 6,
     required this.onPressed,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -22,7 +22,7 @@ class CustomRaisedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
       ),
-      onPressed: () {},
+      onPressed: onPressed,
     );
   }
 }
@@ -30,7 +30,7 @@ class CustomRaisedButton extends StatelessWidget {
 class SignInButton extends CustomRaisedButton {
   SignInButton({
     required String text,
-    Color color =Colors.white ,
+    Color color = Colors.white,
     Color textColor = Colors.black87,
     required VoidCallback onPressed,
   }) : super(

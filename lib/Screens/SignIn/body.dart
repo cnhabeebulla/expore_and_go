@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:explore_and_go_application/functions/helper_function.dart';
 
+import '../../functions/google_sign_in.dart';
+
 class Body extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _pass = TextEditingController();
@@ -29,7 +31,7 @@ class Body extends StatelessWidget {
         if (e.code == 'user-not-found') {
           //print('No user found for that email.');
           Navigator.of(context).pop();
-          showMyDialog("Invalid email", context);
+          showMyDialog("User not found, Please register a account ", context);
           return null;
         } else if (e.code == 'wrong-password') {
           //print('Wrong password provided for that user.');
@@ -159,7 +161,18 @@ class Body extends StatelessWidget {
                         ),
                       ],
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      try {
+                        signUpWithGoogleAccount(context);
+                      } on Exception catch (e) {
+                        print(e.toString());
+                        return;
+                      }
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                          (route) => false);
+                    }),
               ),
               SizedBox(
                 height: size.height * 0.02,
